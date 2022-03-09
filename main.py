@@ -1,4 +1,6 @@
-board=[[0,0],[1,[1,0]],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,[1,1]],[14,0],[15,0],[16,0],[17,0],[18,0],[19,[1,2]],[20,0],[21,0],[22,0],[23,0],[24,0],[25,0],[26,0],[27,0],[28,0],[29,0],[30,0],[31,0],[32,0],[33,0],[34,0],[35,0],[36,0],[37,0],[38,0],[39,0],[40,0],[41,0],[42,0],[43,0],[44,[2,2]],[45,0],[46,0],[47,0],[48,0],[49,0],[50,[2,1]],[51,0],[52,0],[53,0],[54,0],[55,0],[56,0],[57,0],[58,0],[59,0],[60,0],[61,0],[61,0],[62,[2,0]],[63,0]]
+from board import drawboard
+
+board=[[0,0],[1,[1,0]],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,[1,1]],[14,0],[15,0],[16,0],[17,0],[18,0],[19,[1,2]],[20,0],[21,0],[22,0],[23,0],[24,0],[25,0],[26,0],[27,0],[28,0],[29,0],[30,0],[31,0],[32,0],[33,0],[34,0],[35,0],[36,0],[37,0],[38,0],[39,0],[40,0],[41,0],[42,0],[43,0],[44,[2,2]],[45,0],[46,0],[47,0],[48,0],[49,0],[50,[2,1]],[51,0],[52,0],[53,0],[54,0],[55,0],[56,0],[57,0],[58,0],[59,0],[60,0],[61,0],[62,[2,0]],[63,0]]
 turn=1
 activepiece=-1
 win=0
@@ -9,6 +11,15 @@ def search(piece):
       return i
     else:
       pass
+def makeboard():
+  global board
+  z10=search([1,0])
+  z11=search([1,1])
+  z12=search([1,2])
+  z20=search([2,0])
+  z21=search([2,1])
+  z22=search([2,2])
+  return drawboard(board,z10,z11,z12,z20,z21,z22)
 def path(start,end):
   x0=start%8
   y0=start//8
@@ -119,6 +130,7 @@ def isgameover():
 def game():
   global turn
   global board
+  print(makeboard())
   if isgameover()!=0:
     if isgameover()==1:
       return 'Player 1 wins'
@@ -127,15 +139,16 @@ def game():
   if turn==1:
     x=-1
     while x==-1:
-      x=int(input('Player 1, what piece do you want to move?'))
-      if x==0 or x==1 or x==2:
+      x=input('Player 1, what piece do you want to move?')
+      if (x=='0' or x=='1' or x=='2'):
+        x=int(x)
         if ispiecedead([1,x]):
           print('Invalid')
           x=-1
         else:
           x=[1,x]
       else:
-        x==-1
+        x=-1
     y=-1
     while y==-1:
       y=int(input('Where do you want to move?'))
@@ -152,16 +165,19 @@ def game():
       else:
         z=-1
         print('Invalid')
-    print(str(board))
     game()
   if turn==2:
     x=-1
     while x==-1:
-      x=int(input('Player 2, what piece do you want to move?'))
-      if x==0 or x==1 or x==2:
-        x=[2,x]
+      x=input('Player 2, what piece do you want to move?')
+      if x=='a' and not ispiecedead([2,0]):
+        x=[2,0]
+      elif x=='b' and not ispiecedead([2,1]):
+        x=[2,1]
+      elif x=='c' and not ispiecedead([2,2]):
+        x=[2,2]
       else:
-        x==-1
+        x=-1
     y=-1
     while y==-1:
       y=int(input('Where do you want to move?'))
@@ -178,6 +194,5 @@ def game():
       else:
         z=-1
         print('Invalid')
-    print(str(board))
     game()
-
+game()
